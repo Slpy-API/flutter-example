@@ -1,42 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:maplibre_gl/maplibre_gl.dart'; //was 'package:maplibre_gl/mapbox_gl.dart', but is now 'package:maplibre_gl/maplibre_gl.dart'
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // Application name
-      title: 'Flutter Hello World',
-      // Application theme data, you can set the colors for the application as
-      // you want
+      title: 'Slpy+MapLibre Flutter Example',
       theme: ThemeData(
-        // useMaterial3: false,
         primarySwatch: Colors.blue,
       ),
-      // A widget which will be started on application startup
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Slpy+MapLibre Flutter Example'),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   final String title;
-  const MyHomePage({super.key, required this.title});  
+  const MyHomePage({super.key, required this.title});
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  static const apiKey = "your_api_key"; //get your key at www.slpy.com
+  static const mapLanguage = "en";
+  static const startZoom = 3.0;
+  static const center = LatLng(0, -0);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // The title text which will be shown on the action bar
-        title: Text(title),
+        title: Text(widget.title),
       ),
-      body: Center(
-        child: Text(
-          'Hello, World!',
-        ),
+      body: MaplibreMap(
+        styleString:
+            "https://api.slpy.com/style/slpy-mgl-style.json?key=$apiKey&lang=$mapLanguage",
+        myLocationEnabled: true,
+        initialCameraPosition:
+            const CameraPosition(target: center, zoom: startZoom),
+        trackCameraPosition: true,
       ),
     );
   }
